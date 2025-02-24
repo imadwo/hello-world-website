@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI/CD Pipeline
 
 on:
   push:
@@ -26,3 +26,10 @@ jobs:
 
       - name: Validate HTML
         run: html-validator --file index.html
+
+      - name: Deploy to GitHub Pages (if on main branch)
+        if: github.ref == 'refs/heads/main'  # Only deploy on push to main
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .  # Deploy everything in the root
